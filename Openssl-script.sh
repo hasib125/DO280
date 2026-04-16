@@ -7,12 +7,16 @@ printf "Locality:"
 read locality
 printf "Organization Name:"
 read OName
-printf "Organization Unit Name:"
-read OUName
+printf "Organizational Unit Name:"
+read OU
 printf "MyName:"
 read Myname
 printf "Common Name:"
 read CName
-#openssl genrsa -out server.key 4096
-openssl req -new -newkey rsa:4096 --keyout server.key -out server.csr -subj "/C=$Country/ST=$ST/L=$locality/O=$OName/OU=$OUName/CN=$CName"
+
+openssl genrsa -out server.key 4096
+
+openssl req -new -key server.key -out server.csr \
+-subj "/C=$Country/ST=$ST/L=$locality/O=$OName/OU=$OU/CN=$CName"
+
 openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
